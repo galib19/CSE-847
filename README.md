@@ -1,10 +1,10 @@
 # CSE-847
 
-#HW3
+## HW3
 
-Ridge Regression with the Diabetes dataset.
+### Ridge Regression with the Diabetes dataset.
 
-#HW4 
+## HW4 
 
-Logistic Regression with the spam dataset.
-Sparse Logistic Regression with the Alzheimers dataset. 
+### Logistic Regression with the spam dataset.
+### Sparse Logistic Regression with the Alzheimers dataset. 
