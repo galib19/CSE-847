@@ -1,0 +1,46 @@
+% load data
+
+addpath(fullfile('SLEP','functions','L1','L1R'));
+addpath(fullfile('SLEP','functions'));
+addpath(fullfile('SLEP','opts'));
+data = load('alzheimers/ad_data.mat');
+
+%get train test data 
+X_train = data.X_train;
+y_train = data.y_train;
+X_test = data.X_test;
+y_test = data.y_test;
+
+%I have set z < 0 (instead of z <=0) in line 74 of LogisticR to handle 0
+params = [0, 0.01, 0.03, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 0.98, 1];
+
+%initializing number of features and auc scores list
+number_of_selected_features = zeros(size(params));
+auc_scores = zeros(size(params));
+
+for i = 1:numel(params)
+    parameter = params(i);
+    %calling logistic_l1_train function to train 
+    [weights, bias] = logistic_l1_train(X_train, y_train, parameter);
+    %getting number of selected features using sparsity: features, which weights are
+    %close to 0, can be reduced/ignored. 
+    number_of_selected_features(i) = sum(weights ~= 0);
+    %prediciting y 
+    y_predict = (X_test * weights) + bias;
+    
+    [~,~,~,auc_scores(i)] = perfcurve(y_test, y_predict, 1);
+end
+
+figure;
+plot(params, auc_scores, 's-');
+title('Sparse Logistic Regression Experiment');
+xlabel('Regularization Parameter');
+ylabel('Accuracy');
+saveas(gcf, 'sparse_accuracy.png');
+
+figure;
+plot(params, number_of_selected_features, 's-');
+title('Sparse Logistic Regression Experiment');
+xlabel('Regularization Parameter');
+ylabel('Number of Selected Features');
+saveas(gcf, 'sparse_features.png');
