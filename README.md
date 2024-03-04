@@ -8,3 +8,9 @@
 
 ### Logistic Regression with the spam dataset.
 ### Sparse Logistic Regression with the Alzheimers dataset. 
+
+## HW5
+
+### K-means Clustering
+### PCA
+
